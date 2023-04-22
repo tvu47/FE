@@ -18,15 +18,9 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a
-            class="nav-item nav-link {{tabSelect == 'ALL' ? 'badge bg-info text-white' : ''}}"
-            data-toggle="tab"
-            role="tab"
-            (click)="loadComponent('ALL')"
-            style="cursor: pointer"
-            >Tất cả <span class="sr-only">(current)</span></a
-          >
-          <a
-            class="nav-item nav-link {{tabSelect == 'CHOXACNHAN' ? 'badge bg-info text-white' : ''}}"
+            class="nav-item nav-link {{
+              tabSelect == 'CHOXACNHAN' ? 'badge bg-info text-white' : ''
+            }}"
             data-toggle="tab"
             role="tab"
             (click)="loadComponent('CHOXACNHAN')"
@@ -34,7 +28,9 @@
             >Chờ xác nhận</a
           >
           <a
-            class="nav-item nav-link {{tabSelect == 'DANGVANCHUYEN' ? 'badge bg-info text-white' : ''}}"
+            class="nav-item nav-link {{
+              tabSelect == 'DANGVANCHUYEN' ? 'badge bg-info text-white' : ''
+            }}"
             data-toggle="tab"
             role="tab"
             (click)="loadComponent('DANGVANCHUYEN')"
@@ -42,7 +38,9 @@
             >Đang vận chuyển</a
           >
           <a
-            class="nav-item nav-link {{tabSelect == 'DAGIAOHANG' ? 'badge bg-info text-white' : ''}}"
+            class="nav-item nav-link {{
+              tabSelect == 'DAGIAOHANG' ? 'badge bg-info text-white' : ''
+            }}"
             data-toggle="tab"
             role="tab"
             (click)="loadComponent('DAGIAOHANG')"
@@ -50,7 +48,9 @@
             >Đã giao hàng</a
           >
           <a
-            class="nav-item nav-link {{tabSelect == 'HOANTHANH' ? 'badge bg-info text-white' : ''}}"
+            class="nav-item nav-link {{
+              tabSelect == 'HOANTHANH' ? 'badge bg-info text-white' : ''
+            }}"
             data-toggle="tab"
             role="tab"
             (click)="loadComponent('HOANTHANH')"
@@ -58,7 +58,9 @@
             >Hoàn thành</a
           >
           <a
-            class="nav-item nav-link {{tabSelect == 'DAHUY' ? 'badge bg-info text-white' : ''}}"
+            class="nav-item nav-link {{
+              tabSelect == 'DAHUY' ? 'badge bg-info text-white' : ''
+            }}"
             data-toggle="tab"
             role="tab"
             (click)="loadComponent('DAHUY')"
