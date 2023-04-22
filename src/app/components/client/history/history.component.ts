@@ -22,7 +22,7 @@ export class HistoryComponent implements OnInit {
   @ViewChild(DirectDirective, { static: true }) tabHost!: DirectDirective;
   constructor() {}
   ngOnInit(): void {
-    this.loadComponent('ALL');
+    this.loadComponent('CHOXACNHAN');
   }
   public tabSelect: any;
 
@@ -31,8 +31,7 @@ export class HistoryComponent implements OnInit {
     // remove loaded Component
     const viewContainerRef = this.tabHost.viewContainerRef;
     this._component = '';
-    if (_selectedTab == 'ALL') this._component = AllHistoryComponent;
-    else if (_selectedTab == 'CHOXACNHAN')
+    if (_selectedTab == 'CHOXACNHAN')
       this._component = StatusOneHistoryComponent;
     else if (_selectedTab == 'DANGVANCHUYEN')
       this._component = StatusTwoHistoryComponent;
