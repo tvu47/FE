@@ -1,0 +1,68 @@
+<div class="row text-center" style="height: 500px" *ngIf="listHistory == null">
+  <span style="margin-top: 95px">
+    <h5>Nothing in here...</h5>
+  </span>
+</div>
+<div class="row" *ngIf="listHistory != null">
+  <div class="com-1 p-2 mb-2" *ngFor="let item of listHistory">
+    <span>
+      <h5>Bill : {{ item.billId }}</h5>
+    </span>
+    <div class="row m-2 d-flex flex-row-reverse">
+      <span>Ngày tạo : {{ item.createTime }}</span>
+      <span>
+        <h5>Status : {{ item.status }}</h5>
+      </span>
+      <span>
+        <h5>Tổng tiền : {{ item.totalPrice }}</h5>
+      </span>
+    </div>
+    <div class="row p-3 bg-dark" *ngFor="let itemOfValue of item.billDetail">
+      <!-- card -->
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div *ngIf="itemOfValue.productDetail.image != null" class="col-md-4">
+            <img
+              [src]="itemOfValue.productDetail.image"
+              style="width: 600px; height: 400"
+              alt="Trendy Pants and Shoes"
+              class="img-fluid rounded-start"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">
+                Tên sản phẩm: {{ itemOfValue.productName }}
+              </h5>
+              <p class="card-text">Số lượng: {{ itemOfValue.quantity }}</p>
+              <p class="card-text">Màu sắc: {{ itemOfValue.colorName }}</p>
+              <p class="card-text">Size: {{ itemOfValue.sizeName }}</p>
+              <p class="card-text">
+                <small class="text-muted"
+                  ><b>Tổng tiền:</b> {{ itemOfValue.cost }}</small
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row m-2 d-flex flex-row-reverse">
+            <!-- <div
+                class="mualai text-center"
+                [class.democlass]="hovering"
+                (mouseover)="hovering = true"
+                (mouseleave)="hovering = false"
+              >
+                <span style="padding: 10px">Mua lai</span>
+              </div> -->
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              (click)="buyAgain(itemOfValue.idProduct)"
+            >
+              Mua lại
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

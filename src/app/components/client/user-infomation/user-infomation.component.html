@@ -1,0 +1,53 @@
+<div class="container text-center row">
+  <div class="col-12">
+    <h3>Hồ sơ của tôi</h3>
+    <h4>Quản lý thông tin hồ sơ để bảo mật tài khoản</h4>
+    <hr />
+    <form class="form-group" #userForm="ngForm" (ngSubmit)="submit(userForm)">
+      <div class="input-group input-group-outline m-2">
+        <label for="" class="m-1 mt-2 col-2">Họ</label>
+        <input type="text" class="form-control" [(ngModel)]="user_information.firstName" name="firstName"
+          placeholder="" />
+      </div>
+      <div class="input-group input-group-outline m-2">
+        <label for="" class="m-1 mt-2 col-2">Tên</label>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="user_information.lastName"
+          placeholder="" />
+      </div>
+      <div class="input-group input-group-outline m-2">
+        <label for="" class="m-1 mt-2 col-2">Email</label>
+        <input type="text" class="form-control" name="email" [(ngModel)]="user_information.email" placeholder="" />
+      </div>
+      <input type="text" class="form-control" name="id" hidden [(ngModel)]="user_information.id" placeholder="" />
+      <div class="input-group input-group-outline m-2">
+        <label for="" class="m-1 mt-2 col-2">Số điện thoại</label>
+        <input type="text" class="form-control" name="phone" [(ngModel)]="user_information.phone" placeholder="" />
+      </div>
+      <div class="m-2">
+        <label for="" class="m-1 mt-2 col-2">Giới tính</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" [(ngModel)]="user_information.gender" value="1" name="gender"
+            id="inlineRadio1" required />
+          <label class="form-check-label" for="inlineRadio1">Nam</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" [(ngModel)]="user_information.gender" value="0" name="gender"
+            id="inlineRadio2" required />
+          <label class="form-check-label" for="inlineRadio2">Nữ</label>
+        </div>
+      </div>
+      <div class="m-1">
+        <div class="input-group input-group-outline">
+          <label for="" class="m-1 mt-2 col-2">Ngày sinh</label>
+          <input type="date" class="form-control" name="dateOfBirth"
+            [ngModel]="user_information.dateOfBirth | date : 'yyyy-MM-dd'" placeholder="date of birth" required />
+        </div>
+      </div>
+      <div class="input-group input-group-outline m-1">
+        <label for="" class="m-1 mt-2 col-2">Địa chỉ</label>
+        <input type="text" class="form-control" name="address" [(ngModel)]="user_information.address" placeholder="" />
+      </div>
+      <button class="btn btn-outline-success m-2">Lưu</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,175 @@
+<app-nav></app-nav>
+
+
+<div class="container">
+
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://agiay.vn/wp-content/uploads/2022/12/z3938014270808_8bee8564bdf23acff3d25557307a5044.jpg"
+                    class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://agiay.vn/wp-content/uploads/2022/12/z3938014270808_8bee8564bdf23acff3d25557307a5044.jpg"
+                    class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://agiay.vn/wp-content/uploads/2022/12/z3938014270808_8bee8564bdf23acff3d25557307a5044.jpg"
+                    class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+
+            <div class="product-categories mt-5 text-center">
+                <div class="container"><div class="text-center banner-content">
+                    <h2>MỚI NHẤT</h2>
+
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-male" role="tabpanel"
+                            aria-labelledby="pills-male-tab">
+
+
+
+                            <div class="row g-2 g-md-3">
+
+
+
+                                <div *ngFor="let item of listNewestProducts" class="col-md-3 col-6 card">
+                                    <a [routerLink]="['/product/', item.id]" routerLinkActive="active"
+                                        style="text-decoration: none;">
+                                        <img src="{{item.images}}" class="img-fluid lazyloaded"
+                                            data-ll-status="loaded">
+                                        <div class="card-body">
+                                            <div class="text-dark">{{item.productName}}</div>
+                                            <div class="text-dark"><span
+                                                    style="font-weight: bold;">{{item.price}}</span></div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="text-center banner-content mt-5">
+                        <h2>KHÁM PHÁ</h2>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-male" role="tabpanel"
+                                aria-labelledby="pills-male-tab">
+
+
+
+                                <div class="row g-2 g-md-3">
+
+
+
+                                    <div *ngFor="let item of listProducts | paginate:{
+                                        itemsPerPage: 12,
+                                        currentPage: currentPage,
+                                        totalItems: listProducts.length
+                                    }; let i = index " class="col-md-3 col-6 card">
+                                        <a [routerLink]="['/product/', item.id]" routerLinkActive="active"
+                                            style="text-decoration: none;">
+                                            <img src="{{item.images}}" class="img-fluid lazyloaded"
+                                                data-ll-status="loaded">
+                                            <div class="card-body">
+                                                <div class="text-dark">{{item.productName}}</div>
+                                                <div class="text-dark"><span
+                                                        style="font-weight: bold;">{{item.price}}</span></div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-5">
+                            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="pageChange($event)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+
+
+                    <div class="text-center banner-content mt-5">
+                        <h2>BÁN CHẠY NHẤT</h2>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-male" role="tabpanel"
+                                aria-labelledby="pills-male-tab">
+
+
+
+                                <div class="row g-2 g-md-3">
+
+
+
+                                    <div *ngFor="let item of listProductsBestSell" class="col-md-3 col-6 card">
+                                        <a [routerLink]="['/product/', item.id]" routerLinkActive="active"
+                                            style="text-decoration: none;">
+                                            <img src="{{item.images}}" class="img-fluid lazyloaded"
+                                                data-ll-status="loaded">
+                                            <div class="card-body">
+                                                <div class="text-dark">{{item.productName}}</div>
+                                                <div class="text-dark"><span
+                                                        style="font-weight: bold;">{{item.price}}</span></div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-md-2 mt-5">
+            <h3>Loại giày</h3>
+            <ul class="list-group" id="myList">
+                <li *ngFor="let cate of listCategories" class="btn btn-light"
+                    (click)="getProductsByCategoryId(cate.id)">{{cate.categoryName}}</li>
+            </ul>
+            <h3>Khoảng giá</h3>
+            <div class="row text-center">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Từ">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Tới">
+                </div>
+                <div>
+                    <button class="btn btn-secondary col-md-6">Áp dụng</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <app-footer></app-footer>
+
+</div>

@@ -1,0 +1,51 @@
+<app-nav></app-nav>
+
+
+<div class="container">
+
+    <h3>Giỏ hàng</h3>
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th class="col-md-3">Tên sản phẩm</th>
+                <th class="col-md-1">Màu sắc</th>
+                <th class="col-md-1">Kích thước</th>
+                <th class="col-md-2">Đơn giá</th>
+                <th class="col-md-1">Số lượng</th>
+                <th class="col-md-2">Thành tiền</th>
+                <th class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of cartItems">
+                <th><a class="text-decoration-none text-dark" href="/product/{{product.id}}">
+                    {{product.productName}}</a>
+                </th>
+                <td>{{product.color.colorName}}</td>
+                <td>{{product.size.sizeName}}</td>
+                <td>{{product.price}} VNĐ</td>
+                <td>
+                    <input type="number" class="form-control text-center" [(ngModel)]="product.quantity"
+                        value="{{product.quantity}}" min="1" max="{{product.limitQuantity}}" (keyup)="validateQuantity(product)"
+                        (mouseup)="validateQuantity(product)">
+                </td>
+                <td>{{product.price * product.quantity}} VNĐ</td>
+                <td>
+                    <button class="btn btn-danger" (click)="deleteCart(product)">Xóa</button>
+                </td>
+            </tr>
+            <tr>
+                <th>Tổng tiền</th>
+                <td colspan="4"></td>
+                <th>{{totalPrice()}} VNĐ</th>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="7"><button class="btn btn-info text-white" (click)="pay()">Thanh toán</button></td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+    <app-footer></app-footer>
+</div>

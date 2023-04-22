@@ -1,0 +1,272 @@
+<aside
+    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+    id="sidenav-main">
+    <app-aside></app-aside>
+</aside>
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <app-navbar></app-navbar>
+    <div class="container-fluid py-4">
+        <h3>Quản lý tài khoản</h3>
+        <button class="btn btn-outline-dark m-1" data-bs-toggle="modal" data-bs-target="#new_user">
+            Thêm mới
+        </button>
+        <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="">ID</th>
+                            <th class="">Họ tên</th>
+                            <th class="">Địa chỉ</th>
+                            <th class="">Giới tính</th>
+                            <th class="">Số điện thoại</th>
+                            <th class="">Email</th>
+                            <th class="">Ngày tạo</th>
+                            <th class="">Trạng thái</th>
+                            <th class="">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="users != null">
+                        <tr *ngFor="let user of users | paginate:{
+                            itemsPerPage: 10,
+                            currentPage: currentPage,
+                            totalItems: users.length
+                        }; let i = index ">
+                            <td>{{user.id}}</td>
+                            <td>{{user.lastName + " " + user.firstName}}</td>
+                            <td>{{user.address}}</td>
+                            <td>{{user.gender}}</td>
+                            <td>{{user.phone}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.createTime}}</td>
+                            <td>
+                                <span class="badge {{user.active ? 'bg-success' : 'bg-danger'}}">
+                                    {{user.active ? 'Đã kích hoạt' : 'Đã khóa'}}</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-dark m-1" data-bs-toggle="modal"
+                                    data-bs-target="#user_detail" (click)="chooseUser(user)">
+                                    Chi tiết
+                                </button>
+                                <button *ngIf="user.active" class="btn btn-outline-danger m-1">
+                                    Khóa người dùng
+                                </button>
+                                <button *ngIf="!user.active" class="btn btn-outline-success m-1">
+                                    Mở khóa
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center">
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="pageChange($event)">
+            </pagination-controls>
+        </div>
+
+
+
+        <app-footer></app-footer>
+    </div>
+</main>
+
+<div class="modal fade modal-lg" id="user_detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Chi tiết người dùng</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form *ngIf="userChoose != null" [formGroup]="formUser">
+                    <div class="input-group input-group-outline m-2">
+                        <input type="text" class="form-control" formControlName="lastName" placeholder="Họ"
+                            [value]="userChoose.lastName">
+                    </div>
+                    <div class="input-group input-group-outline m-2">
+                        <input type="text" class="form-control" formControlName="firstName" placeholder="Tên"
+                            [value]="userChoose.firstName">
+                    </div>
+                    <div class="input-group input-group-outline m-2">
+                        <input type="text" class="form-control" formControlName="address" placeholder="Địa chỉ"
+                            [value]="userChoose.address">
+                    </div>
+                    <div class="input-group input-group-outline m-2">
+                        <input type="text" class="form-control" formControlName="phone" placeholder="Số điện thoại"
+                            [value]="userChoose.phone">
+                    </div>
+                    <div class="input-group input-group-outline m-2">
+                        <input type="text" class="form-control" formControlName="email" placeholder="Email"
+                            [value]="userChoose.email">
+                    </div>
+
+                    <div class="form-check row">
+                        <label class="form-label">Giới tính</label>
+                        <div class="col-6">
+                            <input class="form-check-input" type="radio" name="gender" id="nam" value="Nam"
+                                formControlName="gender" checked="{{userChoose.gender === 'Nam' ? 'checked' : 'false'}}">
+                            <label for="nam">Nam</label>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-check-input" type="radio" name="gender" id="nu" value="Nữ"
+                                formControlName="gender" checked="{{userChoose.gender === 'Nữ' ?  'checked' : 'false'}}">
+                            <label for="nu">Nữ</label>
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" (click)="update()">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-lg" id="new_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tạo mới</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="formNewUser" (submit)="submitNewUser()">
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" placeholder="Họ" formControlName="firstName">
+                        </div>
+                        <div
+                            *ngIf="this.formNewUser.get('firstName')?.touched || this.formNewUser.get('firstName')?.dirty">
+                            <span class="text-danger"
+                                *ngIf="this.formNewUser.get('firstName')?.errors?.['required']">Vui lòng nhập họ</span>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" placeholder="Tên" formControlName="lastName">
+                        </div>
+                        <div
+                            *ngIf="this.formNewUser.get('lastName')?.touched || this.formNewUser.get('lastName')?.dirty">
+                            <span class="text-danger" *ngIf="this.formNewUser.get('lastName')?.errors?.['required']">Vui
+                                lòng nhập tên</span>
+                        </div>
+                    </div>
+                    <div class="form-check row">
+                        <label class="form-label">Giới tính</label>
+                        <div class="col-6">
+                            <input class="form-check-input" type="radio" name="gender" id="namm" value="1"
+                                formControlName="gender" checked="true">
+                            <label for="namm">Nam</label>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-check-input" type="radio" name="gender" id="nuu" value="0"
+                                formControlName="gender">
+                            <label for="nuu">Nữ</label>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="date" class="form-control" placeholder="Ngày sinh" formControlName="dateOfBirth">
+                        </div>
+                        <div
+                            *ngIf="this.formNewUser.get('dataOfBirth')?.touched || this.formNewUser.get('dataOfBirth')?.dirty">
+                            <span class="text-danger" *ngIf="this.formNewUser.get('dataOfBirth')?.errors?.['required']">Vui
+                                lòng nhập ngày sinh</span>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" placeholder="Địa chỉ" formControlName="address">
+                        </div>
+                        <div *ngIf="this.formNewUser.get('address')?.touched || this.formNewUser.get('address')?.dirty">
+                            <span class="text-danger" *ngIf="this.formNewUser.get('address')?.errors?.['required']">Vui
+                                lòng nhập địa chỉ</span>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" placeholder="Số điện thoại" formControlName="phone">
+                        </div>
+                        <div *ngIf="this.formNewUser.get('phone')?.touched || this.formNewUser.get('phone')?.dirty">
+                            <span class="text-danger" *ngIf="this.formNewUser.get('phone')?.errors?.['required']">Vui
+                                lòng nhập số điện thoại</span>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" placeholder="Email" formControlName="email">
+                        </div>
+                        <div *ngIf="this.formNewUser.get('email')?.touched || this.formNewUser.get('email')?.dirty">
+                            <span class="text-danger" *ngIf="this.formNewUser.get('email')?.errors?.['required']">Vui
+                                lòng nhập tài khoản email</span>
+                            <span class="text-danger" *ngIf="this.formNewUser.get('email')?.errors?.['pattern']">Email
+                                không đúng định dạng</span>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" placeholder="Mật khẩu" formControlName="password">
+                        </div>
+                        <div
+                            *ngIf="this.formNewUser.get('password')?.touched || this.formNewUser.get('password')?.dirty">
+                            <span class="text-danger" *ngIf="this.formNewUser.get('password')?.errors?.['required']">Vui
+                                lòng nhập mật khẩu</span>
+                            <span class="text-danger"
+                                *ngIf="this.formNewUser.get('password')?.errors?.['minlength']">Mật khẩu ít nhất 6 ký
+                                tự</span>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" placeholder="Nhập lại mật khẩu"
+                                formControlName="repassword">
+                        </div>
+                        <div
+                            *ngIf="this.formNewUser.get('repassword')?.touched || this.formNewUser.get('repassword')?.dirty">
+                            <span class="text-danger"
+                                *ngIf="this.formNewUser.get('repassword')?.errors?.['required']">Vui lòng nhập lại mật
+                                khẩu</span>
+                            <span class="text-danger"
+                                *ngIf="this.formNewUser.value.password != this.formNewUser.value.repassword">Mật khẩu
+                                nhập lại không khớp</span>
+                        </div>
+                    </div>
+
+                    <div class="m-2"><select class="form-select form-select-lg mb-3"
+                            aria-label=".form-select-lg example" formControlName="role">
+                            <option value="1" selected>Client</option>
+                            <option value="2">Admin</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-outline-success m-2" type="submit">Thêm</button>
+                </form>
+
+
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

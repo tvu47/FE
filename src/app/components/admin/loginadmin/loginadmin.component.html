@@ -1,0 +1,49 @@
+<section class="vh-100">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <form class="card-body p-5 text-center" [formGroup]="formLogin" (ngSubmit)="onLogin()">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+                            <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                            <p class="text-white-50 mb-5">Đăng nhập</p>
+
+                            <div>
+                                <div class="input-group input-group-outline m-1">
+                                    <label class="form-label">Tài khoản</label>
+                                    <input type="text" formControlName="username" class="form-control text-white">
+                                </div>
+                                <div
+                                    *ngIf="this.formLogin.get('username')?.touched || this.formLogin.get('username')?.dirty">
+                                    <span class="text-danger"
+                                        *ngIf="this.formLogin.get('username')?.errors?.['required']">Vui lòng nhập
+                                        tài
+                                        khoản</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="input-group input-group-outline m-1">
+                                    <label class="form-label">Mật khẩu</label>
+                                    <input type="text" formControlName="password" class="form-control text-white">
+                                </div>
+
+                                <div
+                                    *ngIf="this.formLogin.get('password')?.touched || this.formLogin.get('username')?.dirty">
+                                    <span class="text-danger"
+                                        *ngIf="this.formLogin.get('password')?.errors?.['required']">Vui lòng nhập mật
+                                        khẩu</span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

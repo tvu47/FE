@@ -1,0 +1,81 @@
+<app-nav></app-nav>
+<div class="container">
+
+    <div class="row">
+        <div class="col-4">
+            <div id="carouselExampleControls" class="carousel slide card" data-bs-ride="carousel">
+                <!-- <div class="carousel-inner">
+                    <div *ngFor="let image of product.images" class="carousel-item active">
+                        <img src="{{image.imageUrl}}" class="d-block w-100" alt="...">
+                    </div>
+                </div> -->
+                <div>
+                    <img src="{{this.imageUrlChoose}}" class="d-block w-100" alt="...">
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="small mb-1">SKU: BST-498</div>
+            <h1 class="display-5 fw-bolder" *ngIf="product != null">{{product.productName}}</h1>
+            <div class="fs-5 mb-5" *ngIf="product != null">
+                <!-- <span class="text-decoration-line-through"></span> -->
+                <span>{{getPrice()}} VNĐ</span>
+                <div>
+                    <span>Chọn màu</span>
+                    <ul>
+                        <li *ngFor="let color of colorOptions; let i = index" class="btn m-1"
+                            [ngClass]=" i == indexColor?'btn-danger':'btn-info'" (click)="chooseColor(i, color)">
+                            {{color.colors.colorName}}</li>
+                    </ul>
+                    <span>Chọn size</span>
+                    <ul>
+                        <li *ngFor="let size of colorOptions[indexColor].sizeOptions; let i = index" class="btn m-1"
+                            [ngClass]=" i == indexSize?'btn-danger':'btn-info'" (click)="chooseSize(i,size)">
+                            {{size.size.sizeName}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div>{{getLimitQuantity()}} sản phẩm có sẵn</div>
+            <div class="d-flex" *ngIf="getLimitQuantity() > 0">
+                <input class="form-control text-center m-1" type="number" value="{{quantity}}" [(ngModel)]="quantity"
+                    (keyup)="validateQuantity()" (mouseup)="validateQuantity()" style="max-width: 6rem">
+                <button class="btn btn-info m-1" type="button" (click)="addCart(product)">
+                    <i class="bi-cart-fill me-1"></i>
+                    Thêm vào giỏ hàng
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+    <hr>
+    <div class="text-center">
+
+        <div><b>THÔNG TIN</b></div>
+
+        <p>{{product.content}}</p>
+        <img *ngFor="let image of listImageUrl" src="{{image}}" alt="" style="margin: auto;
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px black;">
+        <h3 class="mt-5">Xem thêm</h3>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-male" role="tabpanel" aria-labelledby="pills-male-tab">
+                <div class="row g-2 g-md-3">
+                    <div *ngFor="let item of listSameProduct" class="col-md-3 col-6 card">
+                        <a href="/product/{{item.id}}" routerLinkActive="active" style="text-decoration: none;">
+                            <img src="{{item.images}}" class="img-fluid lazyloaded" data-ll-status="loaded">
+                            <div class="card-body">
+                                <div class="text-dark">{{item.productName}}</div>
+                                <div class="text-dark"><span style="font-weight: bold;">{{item.price}}</span></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-footer></app-footer>
+</div>

@@ -1,0 +1,88 @@
+<app-nav></app-nav>
+
+<div class="container">
+  <section class="vh-100">
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+            alt="Sample image" />
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form method="post" [formGroup]="formRegis" (ngSubmit)="register()">
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Register</p>
+            </div>
+
+            <!-- Email input -->
+            <div class="form-outline">
+              <label class="form-label" for="form3Example3">Email address</label>
+              <input type="email" id="form3Example3" style="border: 1px solid gray" name="email" ngModel
+                class="form-control form-control-lg" placeholder="Enter a valid email address" required
+                formControlName="username" />
+              <div *ngIf="this.formRegis.get('username')?.touched || this.formRegis.get('username')?.dirty">
+                <span class="text-danger" *ngIf="this.formRegis.get('username')?.errors?.['required']">Vui lòng nhập tài
+                  khoản</span>
+                <span class="text-danger" *ngIf="this.formRegis.get('username')?.errors?.['pattern']">Định dạng email
+                  không đúng</span>
+              </div>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline">
+              <label class="form-label" for="passwd">Password</label>
+              <input type="password" id="passwd" style="border: 1px solid" name="passwd" ngModel
+                class="form-control form-control-lg" placeholder="Enter password" required formControlName="password" />
+              <div *ngIf="this.formRegis.get('password')?.touched || this.formRegis.get('password')?.dirty">
+                <span class="text-danger" *ngIf="this.formRegis.get('password')?.errors?.['required']">Vui lòng nhập mật
+                  khẩu</span>
+                <span class="text-danger" *ngIf="this.formRegis.get('password')?.errors?.['minlength']">Mật khẩu ít nhất
+                  6 ký tự</span>
+              </div>
+            </div>
+            <div class="form-outline">
+              <label class="form-label" for="repass">Repassword</label>
+              <input type="password" id="repass" style="border: 1px solid" name="repasswd" ngModel
+                class="form-control form-control-lg" placeholder="Enter repassword" required
+                formControlName="repassword" />
+              <div *ngIf="this.formRegis.get('repassword')?.touched || this.formRegis.get('repassword')?.dirty">
+                <span class="text-danger" *ngIf="this.formRegis.value.password != this.formRegis.value.repassword">Mật
+                  khẩu nhập lại không chính xác</span>
+              </div>
+            </div>
+            <div class="form-outline">
+              <label class="form-label" for="repass">Phone Number</label>
+              <input type="text" id="phone" style="border: 1px solid" name="phone" ngModel
+                class="form-control form-control-lg" placeholder="Enter your phone number" required
+                formControlName="phone" />
+              <div *ngIf="this.formRegis.get('phone')?.touched || this.formRegis.get('phone')?.dirty">
+                <span class="text-danger" *ngIf="this.formRegis.get('phone')?.errors?.['required']">Vui lòng nhập số
+                  điện thoại</span>
+                <span class="text-danger" *ngIf="this.formRegis.get('phone')?.errors?.['pattern']">Số điện thoại không
+                  đúng</span>
+              </div>
+            </div>
+            <div class="form-outline">
+              <label class="form-label" for="repass">Birthday</label>
+              <input type="date" style="border: 1px solid" name="birthday" ngModel class="form-control form-control-lg"
+                placeholder="Enter your phone number" required formControlName="date" />
+              <div *ngIf="this.formRegis.get('date')?.touched || this.formRegis.get('date')?.dirty">
+                <span class="text-danger" *ngIf="this.formRegis.get('date')?.errors?.['required']">Vui lòng nhập ngày sinh</span>
+              </div>
+            </div>
+
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem">
+                Regis
+              </button>
+              <p class="small fw-bold mt-2 pt-1 mb-0">
+                Have an account? <a href="login" class="link-danger">Login</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<app-footer></app-footer>

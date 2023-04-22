@@ -1,0 +1,179 @@
+<aside
+    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+    id="sidenav-main">
+    <app-aside></app-aside>
+</aside>
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <app-navbar></app-navbar>
+    <div class="container-fluid py-4">
+
+        <h3>Đơn hàng</h3>
+
+        <ul class="nav justify-content-center">
+            <li class="nav-item m-1">
+                <button
+                    class="btn {{tabChoose == 0 ? 'btn-outline-danger bg-danger text-white' : 'btn-outline-secondary'}}"
+                    (click)="chooseTab(0)">Tất cả</button>
+            </li>
+            <li class="nav-item m-1">
+                <button
+                    class="btn {{tabChoose == 1 ? 'btn-outline-danger bg-danger text-white' : 'btn-outline-secondary'}}"
+                    (click)="chooseTab(1)">Chờ xác nhận</button>
+            </li>
+            <li class="nav-item m-1">
+                <button
+                    class="btn {{tabChoose == 2 ? 'btn-outline-danger bg-danger text-white' : 'btn-outline-secondary'}}"
+                    (click)="chooseTab(2)">Đã xác nhận</button>
+            </li>
+            <li class="nav-item m-1">
+                <button
+                    class="btn {{tabChoose == 3 ? 'btn-outline-danger bg-danger text-white' : 'btn-outline-secondary'}}"
+                    (click)="chooseTab(3)">Đang giao</button>
+            </li>
+            <li class="nav-item m-1">
+                <button
+                    class="btn {{tabChoose == 4 ? 'btn-outline-danger bg-danger text-white' : 'btn-outline-secondary'}}"
+                    (click)="chooseTab(4)">Đã giao</button>
+            </li>
+            <li class="nav-item m-1">
+                <button
+                    class="btn {{tabChoose == 5 ? 'btn-outline-danger bg-danger text-white' : 'btn-outline-secondary'}}"
+                    (click)="chooseTab(5)">Đã hủy</button>
+            </li>
+        </ul>
+        <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="">ID</th>
+                            <th class="">Tên khách hàng</th>
+                            <th class="">Số điện thoại</th>
+                            <th class="">Địa chỉ nhận hàng</th>
+                            <th class="">Ngày tạo</th>
+                            <th class="">Tổng tiền</th>
+                            <th class="">Trạng thái</th>
+                            <th class="">Chi tiết</th>
+                            <th class="">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let bill of bills | paginate:{
+                            itemsPerPage: 10,
+                            currentPage: currentPage,
+                            totalItems: bills.length
+                        }; let i = index ">
+                            <td>{{bill.id}}</td>
+                            <td>{{bill.customerName}}</td>
+                            <td>{{bill.phone}}</td>
+                            <td>{{bill.address}}</td>
+                            <td>{{bill.createTime}}</td>
+                            <td>{{getTotalPrice(bill)}} VNĐ</td>
+                            <td><span class="badge {{getClassStatusBill(bill)}}">{{getStringStatusBill(bill)}}</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-dark m-1" data-bs-toggle="modal"
+                                    data-bs-target="#bill_details" (click)="showDetail(bill)">
+                                    Chi tiết
+                                </button>
+                            </td>
+                            <td>
+                                <button *ngIf="bill.status == 0" class="btn btn-outline-info m-1"
+                                    (click)="acceptBill(bill)">Duyệt</button>
+                                <button *ngIf="bill.status == 5" class="btn btn-outline-info m-1"
+                                    (click)="deliverBill(bill)">Giao hàng</button>
+                                <button *ngIf="bill.status == 1" class="btn btn-outline-secondary m-1"
+                                    (click)="deliveredBill(bill)">Đã giao</button>
+                                <button *ngIf="bill.status == 0 || bill.status == 1" class="btn btn-outline-danger m-1"
+                                    (click)="cancelBill(bill)">Huỷ</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center">
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="pageChange($event)">
+            </pagination-controls>
+        </div>
+
+
+        <app-footer></app-footer>
+    </div>
+</main>
+
+
+<div class="modal fade modal-lg" id="bill_details" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Chi tiết hóa đơn</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="">Tên sản phẩm</th>
+                                <th class="">Màu</th>
+                                <th class="">Cỡ</th>
+                                <th class="">Số lượng</th>
+                                <th class="">Đơn giá</th>
+                                <th class="">Tổng</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="billDetail != null">
+                            <tr *ngFor="let product of billDetail.details">
+                                <td><a target="_blank" href="/product/{{product.productId}}">{{product.productName}}</a>
+                                </td>
+                                <td>{{product.colorName}}</td>
+                                <td>{{product.sizeName}}</td>
+                                <td *ngIf="!(billDetail.status == 0 || billDetail.status == 5)">{{product.quantity}}
+                                </td>
+                                <td *ngIf="billDetail.status == 0 || billDetail.status == 5">
+                                    <div class="input-group input-group-outline">
+                                        <input type="number" class="form-control" [(ngModel)]="product.quantity">
+                                    </div>
+                                </td>
+                                <td>{{product.cost}} VNĐ</td>
+                                <td>{{product.cost * product.quantity}} VNĐ</td>
+                                <td>
+                                    <button *ngIf="billDetail.status == 0 || billDetail.status == 5"
+                                        class="btn btn-outline-danger"
+                                        (click)='deleteProductInBill(billDetail.id,product.productId,product.color,product.size)'>Xóa</button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="billDetail.voucher != null">
+                                <th>Voucher</th>
+                                <th>{{billDetail.voucher.code}}</th>
+                                <th>Giảm {{billDetail.voucher.value}} %</th>
+                                <th></th>
+                                <th></th>
+                                <th>- {{billDetail.discount}} VNĐ</th>
+                                <th></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button *ngIf="billDetail != null && (billDetail.status == 0 || billDetail.status == 5)" type="button"
+                    class="btn btn-outline-success">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>

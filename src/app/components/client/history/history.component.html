@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row" style="border-bottom: 0.5px solid gray">
+    <span><h4>Lịch sử</h4></span>
+  </div>
+  <div class="row">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a
+            class="nav-item nav-link {{tabSelect == 'ALL' ? 'badge bg-info text-white' : ''}}"
+            data-toggle="tab"
+            role="tab"
+            (click)="loadComponent('ALL')"
+            style="cursor: pointer"
+            >Tất cả <span class="sr-only">(current)</span></a
+          >
+          <a
+            class="nav-item nav-link {{tabSelect == 'CHOXACNHAN' ? 'badge bg-info text-white' : ''}}"
+            data-toggle="tab"
+            role="tab"
+            (click)="loadComponent('CHOXACNHAN')"
+            style="cursor: pointer"
+            >Chờ xác nhận</a
+          >
+          <a
+            class="nav-item nav-link {{tabSelect == 'DANGVANCHUYEN' ? 'badge bg-info text-white' : ''}}"
+            data-toggle="tab"
+            role="tab"
+            (click)="loadComponent('DANGVANCHUYEN')"
+            style="cursor: pointer"
+            >Đang vận chuyển</a
+          >
+          <a
+            class="nav-item nav-link {{tabSelect == 'DAGIAOHANG' ? 'badge bg-info text-white' : ''}}"
+            data-toggle="tab"
+            role="tab"
+            (click)="loadComponent('DAGIAOHANG')"
+            style="cursor: pointer"
+            >Đã giao hàng</a
+          >
+          <a
+            class="nav-item nav-link {{tabSelect == 'HOANTHANH' ? 'badge bg-info text-white' : ''}}"
+            data-toggle="tab"
+            role="tab"
+            (click)="loadComponent('HOANTHANH')"
+            style="cursor: pointer"
+            >Hoàn thành</a
+          >
+          <a
+            class="nav-item nav-link {{tabSelect == 'DAHUY' ? 'badge bg-info text-white' : ''}}"
+            data-toggle="tab"
+            role="tab"
+            (click)="loadComponent('DAHUY')"
+            style="cursor: pointer"
+            >Đã huỷ</a
+          >
+        </div>
+      </div>
+    </nav>
+  </div>
+  <ng-template history-tab></ng-template>
+</div>

@@ -1,0 +1,370 @@
+<aside
+  class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+  id="sidenav-main">
+  <app-aside></app-aside>
+</aside>
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+  <app-navbar></app-navbar>
+  <div class="container-fluid py-4">
+    <h3>Quản lý sản phẩm</h3>
+    <button class="btn btn-outline-dark m-1" data-bs-toggle="modal" data-bs-target="#new_product">
+      Thêm mới
+    </button>
+    <input type="file" (change)="upload($event)" name="import_excel" id="import_excel" multiple />
+    <!-- <button class="btn btn-outline-dark m-1" data-bs-toggle="modal" data-bs-target="#import_excel">
+            Nhập excel
+        </button> -->
+
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th class="">Id</th>
+              <th class="">Tên sản phẩm</th>
+              <th class="">Phân loại</th>
+              <th class="">Chất liệu</th>
+              <th class="">Nội dung chi tiết</th>
+              <th class="">Nhà sản xuất</th>
+              <th class="">Chi tiết</th>
+              <th class="">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products | paginate:{
+              itemsPerPage: 10,
+              currentPage: currentPage,
+              totalItems: products.length
+          }; let i = index ">
+              <td>{{ product.id }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.category }}</td>
+              <td>{{ product.material }}</td>
+              <td><textarea class="form-control" cols="30" rows="10" disabled>{{ product.content }}</textarea></td>
+              <td>{{ product.manufactory }}</td>
+              <td>
+                <button class="btn btn-outline-dark m-1" data-bs-toggle="modal" data-bs-target="#product_detail"
+                  (click)="chooseProduct(product)">
+                  Chi tiết
+                </button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-outline-success m-1" data-bs-toggle="modal"
+                  data-bs-target="#new_inventory" (click)="chooseProduct(product)">
+                  Nhập sản phẩm
+                </button>
+                <button type="button" class="btn btn-outline-success m-1" data-bs-toggle="modal"
+                  data-bs-target="#update_product" (click)="chooseProductUpdate(product)">
+                  Chỉnh sửa
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="text-center">
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="pageChange($event)">
+      </pagination-controls>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</main>
+
+<div class="modal fade modal-lg" id="product_detail" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel" *ngIf="productDetail != null">
+          {{ productDetail.name }}
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th class="">Sku</th>
+              <th class="">Màu</th>
+              <th class="">Cỡ</th>
+              <th class="">Số lượng</th>
+              <th class="">Đơn giá</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="productDetail != null">
+            <tr *ngFor="let detail of productDetail.inventories">
+              <td>{{ detail.sku }}</td>
+              <td>{{ detail.color }}</td>
+              <td>{{ detail.size }}</td>
+              <td>{{ detail.quantity }}</td>
+              <td>{{ detail.price }} VNĐ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-lg" id="new_product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Chi tiết sản phẩm
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formNewProduct" (submit)="addNewProduct()">
+          <div class="input-group input-group-outline m-2">
+            <input type="text" class="form-control" placeholder="Tên sản phẩm" formControlName="name" />
+          </div>
+          <div class="input-group input-group-outline m-2">
+            <input type="text" class="form-control" placeholder="Nội dung" formControlName="content" />
+          </div>
+          <div class="input-group input-group-outline m-2">
+            <select name="" id="" class="form-control" formControlName="category">
+              <option value="" selected disabled hidden>Loại sản phẩm</option>
+              <option *ngFor="let cate of categories" value="{{ cate.id }}">
+                {{ cate.categoryName }}
+              </option>
+            </select>
+          </div>
+          <div class="input-group input-group-outline m-2">
+            <select name="" id="" class="form-control" formControlName="material">
+              <option value="" selected disabled hidden>Chất liệu</option>
+              <option *ngFor="let mate of materials" value="{{ mate.id }}">
+                {{ mate.materialName }}
+              </option>
+            </select>
+          </div>
+          <div class="input-group input-group-outline m-2">
+            <input type="text" class="form-control" placeholder="Nhà sản xuất" formControlName="manufactory" />
+          </div>
+          <button class="btn btn-outline-success m-2" type="submit">
+            Thêm
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-lg" id="new_inventory" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel" *ngIf="productDetail != null">
+          {{ productDetail.name }}
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formNewInventory" (submit)="addNewInventory()">
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <input type="text" class="form-control" placeholder="Màu sắc" formControlName="color" />
+            </div>
+            <div *ngIf="
+                this.formNewInventory.get('color')?.touched ||
+                this.formNewInventory.get('color')?.dirty
+              ">
+              <span class="text-danger" *ngIf="this.formNewInventory.get('color')?.errors?.['required']">Vui lòng nhập
+                màu sắc</span>
+            </div>
+          </div>
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <input type="number" class="form-control" placeholder="Kích thước" formControlName="size" />
+            </div>
+            <div *ngIf="
+                this.formNewInventory.get('size')?.touched ||
+                this.formNewInventory.get('size')?.dirty
+              ">
+              <span class="text-danger" *ngIf="this.formNewInventory.get('size')?.errors?.['required']">Vui lòng nhập
+                kích thước</span>
+              <span class="text-danger"
+                *ngIf="this.formNewInventory.get('size')?.errors?.['min'] || this.formNewInventory.get('size')?.errors?.['max']">Kích
+                thước từ 35-45</span>
+            </div>
+          </div>
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <input type="number" class="form-control" placeholder="Số lượng" formControlName="quantity" />
+            </div>
+            <div *ngIf="
+                this.formNewInventory.get('quantity')?.touched ||
+                this.formNewInventory.get('quantity')?.dirty
+              ">
+              <span class="text-danger" *ngIf="this.formNewInventory.get('quantity')?.errors?.['required']">Vui lòng
+                nhập số lượng</span>
+              <span class="text-danger" *ngIf="this.formNewInventory.get('quantity')?.errors?.['min']">Số lượng không
+                hợp lệ</span>
+            </div>
+          </div>
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <input type="number" class="form-control" placeholder="Giá" formControlName="price" />
+            </div>
+            <div *ngIf="
+                this.formNewInventory.get('price')?.touched ||
+                this.formNewInventory.get('price')?.dirty
+              ">
+              <span class="text-danger" *ngIf="this.formNewInventory.get('price')?.errors?.['required']">Vui lòng nhập
+                giá</span>
+              <span class="text-danger" *ngIf="this.formNewInventory.get('price')?.errors?.['min']">Giá không hợp
+                lệ</span>
+            </div>
+          </div>
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <input type="text" class="form-control" placeholder="Hình ảnh" formControlName="image" />
+            </div>
+            <div *ngIf="
+                this.formNewInventory.get('image')?.touched ||
+                this.formNewInventory.get('image')?.dirty
+              ">
+              <span class="text-danger" *ngIf="this.formNewInventory.get('image')?.errors?.['required']">Vui lòng nhập
+                đường dẫn hình ảnh</span>
+            </div>
+          </div>
+
+          <button class="btn btn-outline-success m-2" type="submit">
+            Thêm
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-lg" id="import_excel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Chi tiết sản phẩm
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="importExcel()" enctype="multipart/form-data">
+          <div class="input-group input-group-outline m-2">
+            <label for="" class="m-2">Chọn file excel</label>
+            <input type="file" class="form-control" accept="excel" (change)="chooseFile($event)" />
+          </div>
+          <button class="btn btn-outline-success m-2" type="submit">
+            Sumit
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-lg" id="update_product" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Chỉnh sửa
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="productUpdate != null" [formGroup]="formUpdateProduct" (submit)="updateProduct()">
+
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <input type="text" class="form-control" placeholder="Tên sản phẩm" formControlName="name"
+                ngModel="{{this.productUpdate.name}}" />
+            </div>
+            <div *ngIf="this.formUpdateProduct.get('name')?.touched ||this.formUpdateProduct.get('name')?.dirty ">
+              <span class="text-danger" *ngIf="this.formUpdateProduct.get('name')?.errors?.['required']">Vui lòng nhập
+                tên sản phẩm</span>
+            </div>
+          </div>
+
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <textarea class="form-control" placeholder="Nội dung" rows="5" formControlName="content"
+                ngModel="{{this.productUpdate.content}}"></textarea>
+            </div>
+            <div *ngIf="this.formUpdateProduct.get('content')?.touched ||this.formUpdateProduct.get('content')?.dirty ">
+              <span class="text-danger" *ngIf="this.formUpdateProduct.get('content')?.errors?.['required']">Vui lòng
+                nhập
+                nội dung</span>
+            </div>
+          </div>
+
+          <div class=" m-2">
+            <div class="input-group input-group-outline">
+              <select name="" id="" class="form-control" formControlName="category">
+                <option value="" selected disabled hidden>Loại sản phẩm</option>
+                <option *ngFor="let cate of categories" value="{{ cate.id }}">
+                  {{ cate.categoryName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class=" m-2">
+            <div class="input-group input-group-outline">
+              <select name="" id="" class="form-control" formControlName="material">
+                <option value="" selected disabled hidden>Chất liệu</option>
+                <option *ngFor="let mate of materials" value="{{ mate.id }}">
+                  {{ mate.materialName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="m-2">
+            <div class="input-group input-group-outline">
+              <input type="text" class="form-control" placeholder="Nhà sản xuất" formControlName="manufactory"
+                ngModel="{{this.productUpdate.manufactory}}" />
+            </div>
+            <div
+              *ngIf="this.formUpdateProduct.get('manufactory')?.touched ||this.formUpdateProduct.get('manufactory')?.dirty ">
+              <span class="text-danger" *ngIf="this.formUpdateProduct.get('manufactory')?.errors?.['required']">
+                Vui lòng
+                nhập nhà sản xuất</span>
+            </div>
+          </div>
+
+          <button class="btn btn-outline-success m-2" type="submit">
+            Lưu
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

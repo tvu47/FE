@@ -1,0 +1,102 @@
+<app-nav></app-nav>
+
+<div class="container">
+  <section class="vh-100">
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+            class="img-fluid"
+            alt="Sample image"
+          />
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form method="post" [formGroup]="formLogin" (ngSubmit)="login()">
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Login</p>
+            </div>
+            <div class="m-2">
+              <div class="input-group input-group-outline">
+                <input
+                  type="email"
+                  id="form3Example3"
+                  name="email"
+                  class="form-control form-control-lg"
+                  placeholder="Enter a valid email address"
+                  ngModel
+                  required
+                  formControlName="username"
+                />
+              </div>
+              <div
+                *ngIf="
+                  this.formLogin.get('username')?.touched ||
+                  this.formLogin.get('username')?.dirty
+                "
+              >
+                <span
+                  class="text-danger"
+                  *ngIf="this.formLogin.get('username')?.errors?.['required']"
+                  >Vui lòng nhập tài khoản</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="this.formLogin.get('username')?.errors?.['pattern']"
+                  >Định dạng email không đúng</span
+                >
+              </div>
+            </div>
+            <div class="m-2">
+              <div class="input-group input-group-outline">
+                <input
+                  type="password"
+                  name="password"
+                  id="form3Example4"
+                  class="form-control form-control-lg"
+                  placeholder="Enter password"
+                  ngModel
+                  required
+                  formControlName="password"
+                />
+              </div>
+              <div
+                *ngIf="
+                  this.formLogin.get('password')?.touched ||
+                  this.formLogin.get('password')?.dirty
+                "
+              >
+                <span
+                  class="text-danger"
+                  *ngIf="this.formLogin.get('password')?.errors?.['required']"
+                  >Vui lòng nhập mật khẩu</span
+                >
+              </div>
+
+              <div class="text-center mt-4 pt-2">
+                <button
+                  type="submit"
+                  class="row btn btn-primary btn-lg align-items-center justify-content-center"
+                  style="padding-left: 2.5rem; padding-right: 2.5rem"
+                >
+                  Login
+                </button>
+                <p class="small fw-bold mt-2 pt-1 mb-0">
+                  Don't have an account?
+                  <a href="register" class="link-danger">Register</a>
+                </p>
+                <div class="small fw-bold mt-2 pt-1 mb-0">
+                  <!-- Checkbox -->
+                  <div class="form-check mb-0"></div>
+                  <a href="#!" class="text-body">Forgot password?</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>
